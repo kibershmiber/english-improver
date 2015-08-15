@@ -8,8 +8,9 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\appInterface;
 
-class SiteController extends Controller
+class SiteController extends Controller implements appInterface
 {
     public function behaviors()
     {
@@ -34,6 +35,16 @@ class SiteController extends Controller
         ];
     }
 
+    /*
+     * Check cookies at the start
+     */
+    function init(){
+
+        if(Yii::$app->getRequest()->getCookies()->has('lavel1') && Yii::$app->getRequest()->getCookies()->has('lavel2')){
+            //TODO: Make some business logic
+        }
+    }
+
     public function actions()
     {
         return [
@@ -49,30 +60,33 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
+
         return $this->render('index');
     }
 
-    public function actionLogin()
-    {
-        if (!\Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
-        return $this->render('login', [
-            'model' => $model,
-        ]);
+
+    /*
+     * Check if a cookie is set and if not - set it
+     */
+
+    public function setLevel(){
+        // Handle ajax-requests from levelSet checkboxes
+        //TODO: Create business logic
     }
 
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
+    /*
+     * Fetch the date from the DB
+     */
 
-        return $this->goHome();
+    function fetchData()
+    {
+        // TODO: Implement fetchData() method.
     }
+
+    //==============================================Common functions========================================//
+
+
 
     public function actionContact()
     {
@@ -91,4 +105,6 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+
 }

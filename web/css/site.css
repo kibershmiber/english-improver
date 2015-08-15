@@ -27,7 +27,7 @@ body {
 }
 
 .jumbotron .btn {
-    font-size: 21px;
+    font-size: 18px;
     padding: 14px 24px;
 }
 
@@ -88,4 +88,8 @@ a.desc:after {
     border-left: 3px solid #eed3d7;
     padding: 10px 20px;
     margin: 0 0 15px 0;
+}
+
+.input-lg {
+    height: 55px;
 }

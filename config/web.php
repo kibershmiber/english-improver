@@ -9,7 +9,7 @@ $config = [
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => '3jWUubF1ovaTpTuGALlHgbw1XpW_zGEG',
+            'cookieValidationKey' => '3jWUubF1ovaTpTuGALlHgsdbw1XpW_zGEG',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -27,6 +27,11 @@ $config = [
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
             'useFileTransport' => true,
+        ],
+        'urlManager' => [
+            'class' => 'yii\web\UrlManager',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
