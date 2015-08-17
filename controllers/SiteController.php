@@ -2,34 +2,25 @@
 
 namespace app\controllers;
 
+use app\models\Level1;
 use Yii;
-use yii\filters\AccessControl;
+use yii\base\ErrorException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
 use app\models\ContactForm;
-use app\models\appInterface;
+//use app\models\appInterface;
+use yii\base\Response;
 
-class SiteController extends Controller implements appInterface
+class SiteController extends Controller
 {
+    public $enableCsrfValidation = false; // Disable Csrf Validation for our POST request
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout'],
-                'rules' => [
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
+                    'perform' => ['post','get'], // Grand only post-request for the 'performAction'
                 ],
             ],
         ];
@@ -39,10 +30,12 @@ class SiteController extends Controller implements appInterface
      * Check cookies at the start
      */
     function init(){
+    /*
+       if(Yii::$app->getRequest()->getCookies()->has('lavel1') && Yii::$app->getRequest()->getCookies()->has('lavel2')){
 
-        if(Yii::$app->getRequest()->getCookies()->has('lavel1') && Yii::$app->getRequest()->getCookies()->has('lavel2')){
-            //TODO: Make some business logic
         }
+     */
+
     }
 
     public function actions()
@@ -64,16 +57,173 @@ class SiteController extends Controller implements appInterface
         return $this->render('index');
     }
 
-
-
     /*
      * Check if a cookie is set and if not - set it
      */
 
-    public function setLevel(){
-        // Handle ajax-requests from levelSet checkboxes
-        //TODO: Create business logic
+    public function actionPerform($id = NULL,$sentence = NULL)
+    {
+
+
+        $this->enableCsrfValidation = false;
+        // Set cookie for level1 for test
+        if (!isset(Yii::$app->request->cookies['level1'])) {
+            Yii::$app->response->cookies->add(new \yii\web\Cookie([
+                'name' => 'level1',
+                'value' => 'true'
+            ]));
+        }
+            // Perform fetch some random sentence from level1
+
+             try{
+                 if($sentence != NULL) {
+                     //var_dump($this->level1($id, $sentence));
+                 }else{
+                     $level1 = $this->level1();
+
+                     return $this->returnJSON(['id'=>$level1['id'],'rus_phrase'=>$level1['rus_phrase']]);
+
+                 }
+             }catch (ErrorException $e){
+                 return 'An error has occurred: '.$e->getMessage().'. Code: '.$e->getCode();
+             }
+
+        }
+
+
+    // Fetch sentence for level1 and check it if input parameter not NULL
+    protected function level1($id = NULL, $sentence = NULL)
+    {
+
+        if($sentence == NULL)
+        {
+            $max = Level1::find()->count();
+            $model = Level1::findOne(['id'=>rand(1,$max)]);
+            return $model;
+        }else{
+            $model = Level1::findOne(['id' => $id]);
+            if(strcmp($this->checkSentence($sentence),$model->eng_phrase) !== 0)
+            {
+                return false;
+
+            }else{
+                return true;
+            }
+
+        }
     }
+
+    // Fetch sentence for level1 and check it if input parameter not NULL
+    protected function level2($sentence = NULL)
+    {
+
+    }
+
+    protected function checkSentence($sentence)
+    {
+        $sentence = str_replace(['`','"'],'\'',strtolower(trim($sentence)));
+        $contraction = [
+            "didn't",
+            "doesn't",
+            "won't",
+            "cann't",
+            "shan't",
+            "wouldn't",
+            "shouldn't",
+            "isn't",
+            "aren't",
+            "haven't",
+            "hasn't",
+            "hadn't",
+            "wasn't",
+            "weren't",
+            "he'll",
+            "she'll",
+            "you'll",
+            "we'll",
+            "i'll",
+            "it'll",
+            "they'll",
+            "i'm",
+            "he's",
+            "she's",
+            "it's",
+            "you're",
+            "we're",
+            "they're"
+        ];
+        $full = [
+            'did not',
+            'does not',
+            'will not',
+            'cannot',
+            'shell not',
+            'would not',
+            'should not',
+            'is not',
+            'are not',
+            'have not',
+            'has not',
+            'had not',
+            'was not',
+            'were not',
+            'he will',
+            'she will',
+            'you will',
+            'we will',
+            'i will',
+            'it will',
+            'they will',
+            'i am',
+            'he is',
+            'she is',
+            'it is',
+            'you are',
+            'we are',
+            'they are'
+        ];
+
+        return $sentence = str_replace($contraction,$full,$sentence);
+
+    }
+    /*
+     * Make JSON
+     */
+    protected function returnJSON($data = [])
+    {
+        $this->setHeader(200); // MUST BE TESTING IN PRODUCTION SERVER IF WILL NOT BE WORK PROPER USE \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON; // return JSON output format to a client
+        if($data === NULL) $data = ['status' => 'error', 'message' => 'You must specify a return function in your method'];
+
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+    }
+
+    /* Seting header with status code */
+
+    protected function setHeader($status)
+    {
+
+        $status_header = 'HTTP/1.1 ' . $status . ' ' . $this->_getStatusCodeMessage($status);
+        $content_type="application/json; charset=utf-8";
+
+        header($status_header);
+        header('Content-type: ' . $content_type);
+        header('X-Powered-By: ' . "HHMC <hhmc.tk>");
+    }
+    protected function _getStatusCodeMessage($status)
+    {
+        $codes = [
+            200 => 'OK',
+            400 => 'Bad Request',
+            401 => 'Unauthorized',
+            402 => 'Payment Required',
+            403 => 'Forbidden',
+            404 => 'Not Found',
+            500 => 'Internal Server Error',
+            501 => 'Not Implemented',
+        ];
+        return (isset($codes[$status])) ? $codes[$status] : '';
+    }
+
 
     /*
      * Fetch the date from the DB
@@ -85,7 +235,6 @@ class SiteController extends Controller implements appInterface
     }
 
     //==============================================Common functions========================================//
-
 
 
     public function actionContact()

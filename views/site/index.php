@@ -5,9 +5,9 @@
 $this->title = 'English Improver - тренажер для доведения до автоматизма построения правильных английских предложений   ';
 ?>
 <div class="site-index">
-
+    <center><img src="/images/logo.jpg"><br/></center>
     <div class="jumbotron">
-        <h1>English Improver</h1>  <br/>
+
         <div class="btn-group" data-toggle="buttons">
             <label class="btn btn-primary active">
                 <input type="checkbox" id="level1" autocomplete="off" checked> <b>Простой уровень</b>
@@ -17,8 +17,9 @@ $this->title = 'English Improver - тренажер для доведения д
             </label>
         </div>
         <br/>  <br/>  <br/>
-
+        <div id="offer"></div>
         <div class="input-group">
+
             <input type="text" class="form-control  input-lg"  placeholder="Введите сюда английский перевод верхнего предложения"  aria-label="...">
             <div class="input-group-btn">
                 <button type="button" id="myButton" data-loading-text="Работаю.."  class="btn btn-primary" autocomplete="off">
@@ -28,6 +29,7 @@ $this->title = 'English Improver - тренажер для доведения д
                 </div>
 
         </div><br/>
+        <div id="answer"></div>
 
     </div>
 
