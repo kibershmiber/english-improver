@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Level1;
 use Yii;
 use yii\base\ErrorException;
+use yii\base\Exception;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\ContactForm;
@@ -53,7 +54,6 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-
         return $this->render('index');
     }
 
@@ -61,10 +61,8 @@ class SiteController extends Controller
      * Check if a cookie is set and if not - set it
      */
 
-    public function actionPerform($id = NULL,$sentence = NULL)
+    public function actionPerform($id = null,$sentence = null)
     {
-
-
         $this->enableCsrfValidation = false;
         // Set cookie for level1 for test
         if (!isset(Yii::$app->request->cookies['level1'])) {
@@ -77,24 +75,26 @@ class SiteController extends Controller
 
              try{
                  if($sentence != NULL) {
-                     //var_dump($this->level1($id, $sentence));
+                     $level1 = $this->level1($id,$sentence);
+                     return $this->returnJSON($level1);
                  }else{
                      $level1 = $this->level1();
-
                      return $this->returnJSON(['id'=>$level1['id'],'rus_phrase'=>$level1['rus_phrase']]);
-
                  }
              }catch (ErrorException $e){
                  return 'An error has occurred: '.$e->getMessage().'. Code: '.$e->getCode();
              }
-
         }
 
-
     // Fetch sentence for level1 and check it if input parameter not NULL
+    /**
+     * @param null $id
+     * @param null $sentence
+     * @return array|null|static
+     * @throws \yii\db\Exception
+     */
     protected function level1($id = NULL, $sentence = NULL)
     {
-
         if($sentence == NULL)
         {
             $max = Level1::find()->count();
@@ -104,12 +104,17 @@ class SiteController extends Controller
             $model = Level1::findOne(['id' => $id]);
             if(strcmp($this->checkSentence($sentence),$model->eng_phrase) !== 0)
             {
-                return false;
+                $model->appeared++;
+                $model->wrong++;
+                if(!$model->save()) throw new \yii\db\Exception;
+
+                return ['eng_phrase' => ucfirst($model->eng_phrase), 'status' => false];
 
             }else{
-                return true;
+                $model->appeared++;
+                if(!$model->save()) throw new \yii\db\Exception;
+                return ['eng_phrase' => ucfirst($model->eng_phrase), 'status' => true];
             }
-
         }
     }
 

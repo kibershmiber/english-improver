@@ -5,7 +5,7 @@
 $this->title = 'English Improver - тренажер для доведения до автоматизма построения правильных английских предложений   ';
 ?>
 <div class="site-index">
-    <center><img src="/images/logo.jpg"><br/></center>
+   <!-- <center><img src="/images/logo.jpg"><br/></center>-->
     <div class="jumbotron">
 
         <div class="btn-group" data-toggle="buttons">
@@ -17,19 +17,25 @@ $this->title = 'English Improver - тренажер для доведения д
             </label>
         </div>
         <br/>  <br/>  <br/>
-        <div id="offer"></div>
+        <div class="row">
+            <div class="col-md-6"><div class="well well-sm" ><div id="offer"></div></div></div>
+            <div class="col-md-3"><div class="well well-sm">Правильных ответов: <span class="label label-success" id="right"></span> </div></div>
+            <div class="col-md-3"><div class="well well-sm"> Не правильных ответов: <span class="label label-danger" id="wrong"></span>  </div></div>
+            <!--<div class="col-md-1"><div class="well well-sm"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></div></div>-->
+        </div>
+
+
         <div class="input-group">
+                <input type="text" id="userinput" class="form-control  input-lg"  placeholder="Введите сюда английский перевод верхнего предложения" >
 
-            <input type="text" class="form-control  input-lg"  placeholder="Введите сюда английский перевод верхнего предложения"  aria-label="...">
             <div class="input-group-btn">
-                <button type="button" id="myButton" data-loading-text="Работаю.."  class="btn btn-primary" autocomplete="off">
-                    Enter
-                </button>
+                <button type="button" id="enterButton" data-loading-text="Работаю.."  class="btn btn-primary btn-lg" autocomplete="off">Enter</button>
+            </div>
 
-                </div>
-
-        </div><br/>
+        </div>
+        <br/>
         <div id="answer"></div>
+
 
     </div>
 
