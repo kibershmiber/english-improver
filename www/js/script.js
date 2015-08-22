@@ -3,65 +3,118 @@ English Improver main-js file
 Poremchuk E. (c) 2015
 e.poremchuk@gmail.com
 */
+// Start a application instant
+init();
 
-var $siteurl = 'site/perform';
-answersCounter('start')
-getData();
-setInitialCookies();
+// Configure application
+function init(){
+    $siteurl = 'site/perform'; //API url
+    answersCounter('start') // Initialize answer counters
+    getData(); // Fetch a sentence
+    setInitialCookies(); // Initialize cookies
+
+    //Initialze tooltips
+    $("[data-toggle='tooltip']").tooltip({'delay': { show: 500, hide: 800 }});
+    $("[data-toggle='popover']").popover();
+}
 
 //Set initial cookies
+// I've separated all "if-else" statement to better implicit
 function setInitialCookies(){
     // Init counter ERROR
-    if(Cookies.get('error') == undefined){
+   // if(Cookies.get('error') == undefined){
         Cookies.set('error', 0);
-    }
-
+    //}
     // Init counter RIGHT
-    if(Cookies.get('right') == undefined){
+    //if(Cookies.get('right') == undefined){
         Cookies.set('right', 0);
-    }
+    //}
+        Cookies.set('timer', false);
+    //reset timer
+    //$('#timer').timer('remove');
 
     //Initial button level1 in site
-    if(Cookies.get('level1') == undefined){
-        Cookies.set('level', true);
-    }
+   // if(Cookies.get('level1') == undefined){
+        Cookies.set('level1', true);
+  //  }
 
     //Initial button level2 in site
-    if(Cookies.get('level1') == undefined){
-        Cookies.set('level', false);
-    }
+   // if(Cookies.get('level2') == undefined){
+        Cookies.set('level2', false);
+   // }
+
 }
-//TODO: Why it doesn't work? Finish it ! ))
+$("#userinput").focus(function() {
+
+    if(Cookies.get('timer') == "false"){
+        startTimer();
+    }
+});
+
+//Start the timer
+function startTimer(){
+    $('#timer').timer();
+    Cookies.set('timer', true);
+}
+
+//Pause timer
+$("div#timer").on('click',function(){
+    if(Cookies.get('timer') == "true") {
+        $('#timer').timer('pause');
+        Cookies.set('timer', 'pause');
+    }else if(Cookies.get('timer') == 'pause'){
+        $('#timer').timer('resume');
+        Cookies.set('timer', 'true');
+    }
+});
+
+//Perform click on reset image
+$('#resetButton').on('click', function(){
+    resetCounters();
+});
+
+//Reset answer counters to '0'
+function resetCounters(){
+    Cookies.set('error', 0);
+    Cookies.set('right', 0);
+    $('#wrong').html('0');
+    $('#right').html('0');
+    Cookies.set('timer', false);
+    $('#timer').timer('remove');
+    $('#timer').html('<span class="glyphicon glyphicon-time" aria-hidden="true"></span> 00:00');
+    console.log('Counters and timer has been reset');
+    return false;
+}
+
 //Cache a click on level1 button
-$('#level1').on('click', function () {
-    console.log('false');
-    changeLevel('level1');
+$("div.btn-group>label:nth-child(1)").on('click',function() {
+    changeLevel(1);
+    getData();
+});
+//Cache a click on level2 button
+$("div.btn-group>label:nth-child(2)").on('click',function() {
+    changeLevel(2);
+    getData();
+
 });
 
-$('#level2').on('click', function () {
-    changeLevel('level2');
-});
-
-//Handle check in buttons (level chenger)
+//Handle check in buttons (level changer)
 function changeLevel(level){
-    if(level == "level1"){
-        if(Cookies.get('level1') == true){
+    if(level == 1){
+        if(Cookies.get('level1') == "true"){
             Cookies.set('level1', false);
-            console.log('level1');
-        }else if(Cookies.get('level1') == false){
+
+        }else if(Cookies.get('level1') == "false"){
             Cookies.set('level1', true);
-            console.log('level1f');
         }
-    }else if(level == "level2"){
-        if(Cookies.get('level2') == true || Cookies.get('level2') == undefined){
+    }else if(level == 2){
+        if(Cookies.get('level2') == "true" || Cookies.get('level2') == "undefined"){
             Cookies.set('level2', false);
-            console.log('level2');
-        }else if(Cookies.get('level2') == false){
-            Cookies.set('level2', false);
-            console.log('level2f');
+
+        }else if(Cookies.get('level2') == "false"){
+            Cookies.set('level2', true);
         }
-            }
-    return true;
+    }
 }
 //Count the answers on site
 function answersCounter(type){
@@ -111,7 +164,6 @@ function check(){
         $("#userinput").val('');
         console.log('next - true');
         getData();
-        Cookies.set('next', false);
     }else{
         $.ajax({
             url: $siteurl,
@@ -140,12 +192,27 @@ function check(){
         });
     }
 }
+
 //place a random sentence to the holder from the YII2 actionPerform function
 function getData() {
+    if(Cookies.get('level_q') == "false") {
+        Cookies.set('level_q', true);
+    }else if(Cookies.get('level_q') == undefined){
+        Cookies.set('level_q', false);
+    }else{
+        Cookies.set('level_q', false);
+    }
+
+
     $.getJSON("site/perform", function (result) {
         $('.input-group').removeClass("has-error");
         $('.input-group').removeClass("has-success");
+        Cookies.set('next', false);
         $('#offer').text(JSON.stringify(result['rus_phrase']));
-        Cookies.set('last_id', result['id']);
+        Cookies.set('last_id', result['id'],'value', { domain: 'improver.dev' });
+
+
+
+
     })
 }

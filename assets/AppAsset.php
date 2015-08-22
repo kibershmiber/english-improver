@@ -22,12 +22,13 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'js/cookies.js',
-        'js/script.js'
-
+        'js/script.js',
+        'js/timer.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
+        'yii\bootstrap\BootstrapPluginAsset'
 
     ];
 }

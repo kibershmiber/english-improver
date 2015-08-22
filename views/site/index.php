@@ -6,6 +6,7 @@ $this->title = 'English Improver - тренажер для доведения д
 ?>
 <div class="site-index">
    <!-- <center><img src="/images/logo.jpg"><br/></center>-->
+    <br/> <br/>
     <div class="jumbotron">
 
         <div class="btn-group" data-toggle="buttons">
@@ -18,18 +19,20 @@ $this->title = 'English Improver - тренажер для доведения д
         </div>
         <br/>  <br/>  <br/>
         <div class="row">
-            <div class="col-md-6"><div class="well well-sm" ><div id="offer"></div></div></div>
-            <div class="col-md-3"><div class="well well-sm">Правильных ответов: <span class="label label-success" id="right"></span> </div></div>
-            <div class="col-md-3"><div class="well well-sm"> Не правильных ответов: <span class="label label-danger" id="wrong"></span>  </div></div>
-            <!--<div class="col-md-1"><div class="well well-sm"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></div></div>-->
+            <div class="col-md-6"><div class="well well-sm" ><div id="offer"  data-toggle="tooltip" data-placement="bottom" title="Предложение на русском языке которое нужно перевести"><span class="glyphicon glyphicon-time" aria-hidden="true"></span></div></div></div>
+            <div class="col-md-2"><div class="well well-sm">Правильно: <span class="label label-success" id="right">0</span> </div></div>
+            <div class="col-md-2"><div class="well well-sm">Не правильно: <span class="label label-danger" id="wrong">0</span>  </div></div>
+            <div class="col-md-2"><div class="well well-sm"><div id="timer"  data-toggle="tooltip" data-placement="bottom" title="Таймер запускаеться сам при первом вводе анг. предложения"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> 00:00 </div></a></div>
         </div>
 
-
+        </div>
         <div class="input-group">
                 <input type="text" id="userinput" class="form-control  input-lg"  placeholder="Введите сюда английский перевод верхнего предложения" >
 
             <div class="input-group-btn">
-                <button type="button" id="enterButton" data-loading-text="Работаю.."  class="btn btn-primary btn-lg" autocomplete="off">Enter</button>
+                <button type="button" id="enterButton"  class="btn btn-primary btn-lg" data-toggle="tooltip" data-placement="bottom" title="Проверка предложения и генерация следующего" >Enter</button>
+                <button type="button" id="resetButton" class="btn btn-primary btn-lg" data-toggle="tooltip" data-placement="bottom" title="Сброс счетчиков и таймера" ><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                <button type="button" id="quaButton" class="btn btn-primary btn-lg"  data-toggle="modal" data-placement="bottom" title="Граматическая помощь" data-target="#helpModal"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" ></span></button>
             </div>
 
         </div>
@@ -39,16 +42,36 @@ $this->title = 'English Improver - тренажер для доведения д
 
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="helpModalLabel">Скорая граматическая помощь</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="well">
+                        <br/> (do,does,did,will,-ed,negatives,questions etc...)
+                        <br/> (can,may,must,should,would,to be etc...)
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Спасибо, закрыть.</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="body-content">
-        <a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-          Грамантическая подсказка
+        <!--<a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+          Граматическая подсказка
         </a><br/>
         <div class="collapse" id="collapseExample">
             <div class="well">
                 <br/> (do,does,did,will,-ed,negatives,questions etc...)
                 <br/> (can,may,must,should,would,to be etc...)
             </div>
-        </div>
+        </div>-->
 
     </div>
 </div>

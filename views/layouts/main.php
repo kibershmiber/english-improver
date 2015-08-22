@@ -27,20 +27,19 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'English Improver',
+        'brandLabel' => '<img src="/images/US-UK_flag.jpg"/>&nbsp;&nbsp;English Improver',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'navbar-default navbar-fixed-top',
         ],
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Главная', 'url' => ['/site/index']],
+            ['label' => 'Тренажер', 'url' => [Yii::$app->homeUrl]],
             ['label' => 'О проекте', 'url' => ['/site/about']],
-            ['label' => 'Контакты', 'url' => ['/site/contact']],
+            ['label' => 'Грамульки', 'url' => ['/site/grammarnazi']],
             ['label' => 'Мобильная версия', 'url' => ['/site/mobile']],
-
         ],
     ]);
     NavBar::end();
@@ -49,7 +48,9 @@ AppAsset::register($this);
     <div class="container">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
+            'homeLink' => ['label' => 'Тренажер',
+                'url' => Yii::$app->getHomeUrl()]
+            ]) ?>
         <?= $content ?>
     </div>
 </div>

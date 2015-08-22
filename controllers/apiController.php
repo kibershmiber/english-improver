@@ -10,7 +10,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 
 
-class SiteController extends Controller
+class ApiController extends Controller
 {
     public $enableCsrfValidation = false; // Disable Csrf Validation for our POST request
 
@@ -20,7 +20,7 @@ class SiteController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'perform' => ['post','get'], // Grand only post-request for the 'performAction'
+                    'perform' => ['post'], // Grand only post-request for the 'performAction'
                 ],
             ],
         ];
@@ -40,11 +40,28 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
+    function actionTest(){
+
+        if($_COOKIE['level1'] == true)
+        {
+            echo 'Hello!';
+            exit;
+        }else{
+            echo 'Not Hello!';
+            exit;
+        }
+    }
     /*
      * Check if a cookie is set and if not - set it
      */
-    public function actionPerform($id = null,$sentence = null)
+    public function actionPerform($data)
     {
+
+
+
+
+
+
         if($_COOKIE['level1'] == "true" && $_COOKIE['level2'] == "true"){
 
             if($_COOKIE['level_q'] == "true"){
@@ -74,17 +91,17 @@ class SiteController extends Controller
 
     // Perform fetch some random sentence from levelN
     protected function fetchSentences($level, $id, $sentence){
-             try{
-                 if($sentence != NULL) {
-                     $level = $this->$level($id,$sentence);
-                     return $this->returnJSON($level);
-                 }else{
-                     $level = $this->$level();
-                     return $this->returnJSON(['id'=>$level['id'],'rus_phrase'=>$level['rus_phrase']]);
-                 }
-             }catch (ErrorException $e){
-                return 'An error has occurred: '.$e->getMessage().'. Code: '.$e->getCode();
+        try{
+            if($sentence != NULL) {
+                $level = $this->$level($id,$sentence);
+                return $this->returnJSON($level);
+            }else{
+                $level = $this->$level();
+                return $this->returnJSON(['id'=>$level['id'],'rus_phrase'=>$level['rus_phrase']]);
             }
+        }catch (ErrorException $e){
+            return 'An error has occurred: '.$e->getMessage().'. Code: '.$e->getCode();
+        }
     }
 
     // Fetch sentence for level1 and check it if input parameter not NULL
@@ -251,16 +268,4 @@ class SiteController extends Controller
         return (isset($codes[$status])) ? $codes[$status] : '';
     }
 
-
-    //==============================================Common functions========================================//
-
-
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
-    public function actionGrammarnazi()
-    {
-        return $this->render('grammarnazi');
-    }
 }
