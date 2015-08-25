@@ -4,6 +4,17 @@ body {
     background-image: url("../images/background.png");
 }
 
+.helpModal {
+    background: url('../images/table_verbs.PNG') no-repeat;
+    background-size: cover;
+}
+
+#info{
+
+    background: url('../images/table_verbs.PNG') no-repeat;
+    background-size: cover;
+
+}
 .wrap {
     min-height: 100%;
     height: auto;

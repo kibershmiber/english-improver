@@ -27,7 +27,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => '<img src="/images/US-UK_flag.jpg"/>&nbsp;&nbsp;English Improver',
+        'brandLabel' => '<img src="/images/US-UK_flag.jpg"/>&nbsp;&nbsp;Тренировка беглого английского',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-default navbar-fixed-top',
@@ -36,10 +36,10 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Тренажер', 'url' => [Yii::$app->homeUrl]],
-            ['label' => 'О проекте', 'url' => ['/site/about']],
-            ['label' => 'Грамульки', 'url' => ['/site/grammarnazi']],
-            ['label' => 'Мобильная версия', 'url' => ['/site/mobile']],
+            //['label' => 'Тренажер', 'url' => [Yii::$app->homeUrl]],
+            ['label' => 'О проекте', 'url' => [Yii::$app->homeUrl.'#']],
+            ['label' => 'Грамульки', 'url' => [Yii::$app->homeUrl.'#']],
+            ['label' => 'Мобильная версия', 'url' => [Yii::$app->homeUrl.'#']],
         ],
     ]);
     NavBar::end();

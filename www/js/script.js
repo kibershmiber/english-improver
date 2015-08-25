@@ -176,7 +176,10 @@ function check(){
                 $('#answer').html('<p>An error has occurred</p>');
             },
             success: function (data) {
+                data = jQuery.parseJSON(data);
                 Cookies.set('next', true);
+                console.log(data);
+                console.log(data.status);
                 if (data.status !== undefined) {
                     if (data.status == false) {
                         $('.input-group').addClass("has-error");
@@ -187,6 +190,8 @@ function check(){
                         $('#answer').html('<div class="alert alert-success" role="alert"><h3>Верно!</h3>Для продолжения нажмите "Enter"</div>');
                         answersCounter('right');
                     }
+                }else{
+                    $('#answer').html('data.status == undefined');
                 }
             }
         });
@@ -202,17 +207,12 @@ function getData() {
     }else{
         Cookies.set('level_q', false);
     }
-
-
     $.getJSON("site/perform", function (result) {
         $('.input-group').removeClass("has-error");
         $('.input-group').removeClass("has-success");
         Cookies.set('next', false);
         $('#offer').text(JSON.stringify(result['rus_phrase']));
         Cookies.set('last_id', result['id'],'value', { domain: 'improver.dev' });
-
-
-
 
     })
 }

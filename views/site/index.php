@@ -5,8 +5,9 @@
 $this->title = 'English Improver - тренажер для доведения до автоматизма построения правильных английских предложений   ';
 ?>
 <div class="site-index">
-   <!-- <center><img src="/images/logo.jpg"><br/></center>-->
-    <br/> <br/>
+    <br/>
+   <center><img src="/images/logo.png"><br/></center>
+
     <div class="jumbotron">
 
         <div class="btn-group" data-toggle="buttons">
@@ -51,10 +52,8 @@ $this->title = 'English Improver - тренажер для доведения д
                     <h4 class="modal-title" id="helpModalLabel">Скорая граматическая помощь</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="well">
-                        <br/> (do,does,did,will,-ed,negatives,questions etc...)
-                        <br/> (can,may,must,should,would,to be etc...)
-                    </div>
+
+              <img src="/images/table_verbs.PNG">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Спасибо, закрыть.</button>
@@ -63,15 +62,6 @@ $this->title = 'English Improver - тренажер для доведения д
         </div>
     </div>
     <div class="body-content">
-        <!--<a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-          Граматическая подсказка
-        </a><br/>
-        <div class="collapse" id="collapseExample">
-            <div class="well">
-                <br/> (do,does,did,will,-ed,negatives,questions etc...)
-                <br/> (can,may,must,should,would,to be etc...)
-            </div>
-        </div>-->
 
     </div>
 </div>
