@@ -2,7 +2,7 @@
 .idea
 
 # ignoring db.php
-#/config/db.php
+/config/db.php
 
 # netbeans project files
 nbproject
