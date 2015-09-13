@@ -27,7 +27,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => '<img src="/images/US-UK_flag.jpg"/>&nbsp;&nbsp;Тренировка беглого английского',
+        'brandLabel' => '<img src="/images/US-UK_flag.jpg"/>&nbsp;&nbsp;Тренировка беглого английского языка',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-default navbar-fixed-top',

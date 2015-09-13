@@ -176,18 +176,23 @@ function check(){
                 $('#answer').html('<p>An error has occurred</p>');
             },
             success: function (data) {
-                data = jQuery.parseJSON(data);
+                if (!document.location.hostname == "improver.dev"){ // Check if a host is my local environmental
+                    data = jQuery.parseJSON(data);
+                }
+
                 Cookies.set('next', true);
                 console.log(data);
                 console.log(data.status);
                 if (data.status !== undefined) {
                     if (data.status == false) {
                         $('.input-group').addClass("has-error");
-                        $('#answer').html('<div class="alert alert-danger" role="alert"><h3>Не верно!</h3>А нужно было: <b>'+data.eng_phrase+'</b><br/>Для продолжения нажмите "Enter"</div>');
+                        $('#answer').html('<div class="alert alert-danger" role="alert"><h3>Не верно!</h3>А нужно было:' +
+                            ' ' + '<b>'+data.eng_phrase+'</b><br/>Для продолжения нажмите "Enter"</div>');
                         answersCounter('error');
                     } else {
                         $('.input-group').addClass("has-success");
-                        $('#answer').html('<div class="alert alert-success" role="alert"><h3>Верно!</h3>Для продолжения нажмите "Enter"</div>');
+                        $('#answer').html('<div class="alert alert-success" role="alert"><h3>Верно!</h3>Для продолжения ' +
+                            'нажмите "Enter"</div>');
                         answersCounter('right');
                     }
                 }else{
